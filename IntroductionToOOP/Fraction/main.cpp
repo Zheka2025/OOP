@@ -92,12 +92,9 @@ public:
 		this->denominator = denominator > 0 ? denominator : -denominator;
 	}
 
-	Fraction(const Fraction& other)
+	Fraction(const Fraction& other) : minus(other.minus), integer(other.integer), numerator(other.numerator), denominator(other.denominator)
 	{
-		this->minus = other.minus;
-		this->integer = other.integer;
-		this->numerator = other.numerator;
-		this->denominator = other.denominator;
+
 	}
 
 	//-------------------------Operators---------------------------//

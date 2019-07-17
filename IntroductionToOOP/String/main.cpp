@@ -27,17 +27,13 @@ public:
 
 
 	//       Constructors:
-	String(int size = 80)
+	String(int size = 80) : size(size), str(new char[size])
 	{
-		this->size = size;
-		this->str = new char[size] {};
 		cout << "DefConstructor:\t" << this << endl;
 	}
 
-	String(const char* str)
+	String(const char* str) : str(new char[strlen(str)+1])
 	{
-		this->size = strlen(str) + 1;
-		this->str = new char[size] {};
 		for (int i = 0; str[i]; i++)this->str[i] = str[i];
 		cout << "Constructor:\t" << this << endl;
 	}
