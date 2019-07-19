@@ -37,17 +37,17 @@ public:
 		x = y = 0;
 		cout << "Constructor: " << this << endl;
 	}*/
-	Point(double x = 0, double y = 0)
+	Point(double x = 0, double y = 0): x(x), y(y)
 	{
-		this->x = x;
-		this->y = y;
+		/*this->x = x;
+		this->y = y;*/
 		cout << "Constructor: " << this << endl;
 	}
 
-	Point(const Point& other)
+	Point(const Point& other) : x(other.x), y(other.y)
 	{
-		this->x = other.x;
-		this->y = other.y;
+		/*this->x = other.x;
+		this->y = other.y;*/
 		cout << "CopyConstructor: " << this << endl;
 	}
 
