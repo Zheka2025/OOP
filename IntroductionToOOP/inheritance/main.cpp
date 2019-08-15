@@ -117,6 +117,53 @@ public:
 	}
 };
 
+class Teacher :public Human
+{
+	string faculty;
+	unsigned int hours;
+public:
+	const string& get_faculty() const
+	{
+		return this->faculty;
+	}
+	unsigned int get_hours() const
+	{
+		return this->hours;
+	}
+	void set_faculty(const string& faculty)
+	{
+		this->faculty = faculty;
+	}
+	void set_hours(unsigned int hours)
+	{
+		this->hours = hours;
+	}
+
+	//Constructors:
+	Teacher(const string& first_name, const string& last_name, unsigned int age, const string& faculty, unsigned int hours) :Human(first_name, last_name, age)
+	{
+		this->faculty = faculty;
+		this->hours = hours;
+		cout << "TConstructor\t" << this << endl;
+	}
+	~Teacher()
+	{
+		cout << "TDestructor\t" << this << endl;
+	}
+
+	//Methods:
+	void info()
+	{
+		Human::info();
+		cout << faculty << " " << hours << " часов" << endl;
+	}
+};
+
+class Graduate :public Student
+{
+
+};
+
 void main()
 {
 	setlocale(LC_ALL, "");
