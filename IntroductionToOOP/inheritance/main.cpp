@@ -171,8 +171,46 @@ public:
 
 class Graduate :public Student
 {
-	unsigned int qt_exam;
+	unsigned int done_exam;
+	unsigned int tails;
+public:
+	unsigned int get_done_exam() const
+	{
+		return this->done_exam;
+	}
+	unsigned int get_tails() const
+	{
+		return this->tails;
+	}
+	void set_done_exam(unsigned int done_exam)
+	{
+		this->done_exam = done_exam;
+	}
+	void set_tails(unsigned int tails)
+	{
+		this->tails = tails;
+	}
 
+	//Constructors
+	Graduate(const string& first_name, const string& last_name, unsigned int age,
+		const string& specialty, const string& group, unsigned int year, unsigned int rating,
+		unsigned int done_exam, unsigned int tails) :Student(first_name, last_name, age, specialty, group, year, rating)
+	{
+		this->done_exam = done_exam;
+		this->tails = tails;
+		cout << "GConstructor\t" << this << endl;
+	}
+	~Graduate()
+	{
+		cout << "GDestructor\t" << this << endl;
+	}
+
+	//Methods:
+	void info()
+	{
+		Student::info();
+		cout << "Ñäàë çà÷åòîâ: " << done_exam << " Õâîñòû: " << tails << endl;
+	}
 };
 
 void main()
@@ -182,4 +220,8 @@ void main()
 	h.info();
 	Student s("Èâàí", "Òóïåíêî", 18, "Äåâåëóïåğ", "ÑÒ ÏÓ 34à", 1, 0);
 	s.info();
+	Teacher t("Ãğèãîğèé", "Ìàñòåğåíêî", 45, "1Ñ", 6, 1000);
+	t.info();
+	Graduate g("Ïåòğî", "Ñàøêî", 19, "Äåâåëóïåğ", "ÑÒ ÏÓ 34à", 3, 3400, 1, 49);
+	g.info();
 }
