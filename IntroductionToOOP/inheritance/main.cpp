@@ -121,6 +121,7 @@ class Teacher :public Human
 {
 	string faculty;
 	unsigned int hours;
+	unsigned int qt_groups;
 public:
 	const string& get_faculty() const
 	{
@@ -130,6 +131,10 @@ public:
 	{
 		return this->hours;
 	}
+	unsigned int get_qt_groups() const
+	{
+		return this->qt_groups;
+	}
 	void set_faculty(const string& faculty)
 	{
 		this->faculty = faculty;
@@ -138,11 +143,16 @@ public:
 	{
 		this->hours = hours;
 	}
+	void set_qt_groups(unsigned int qt_groups)
+	{
+		this->qt_groups = qt_groups;
+	}
 
 	//Constructors:
-	Teacher(const string& first_name, const string& last_name, unsigned int age, const string& faculty, unsigned int hours) :Human(first_name, last_name, age)
+	Teacher(const string& first_name, const string& last_name, unsigned int age, const string& faculty, unsigned int qt_groups, unsigned int hours) :Human(first_name, last_name, age)
 	{
 		this->faculty = faculty;
+		this->qt_groups = qt_groups;
 		this->hours = hours;
 		cout << "TConstructor\t" << this << endl;
 	}
@@ -161,6 +171,7 @@ public:
 
 class Graduate :public Student
 {
+	unsigned int qt_exam;
 
 };
 
