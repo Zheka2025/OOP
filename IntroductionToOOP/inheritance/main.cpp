@@ -2,6 +2,8 @@
 #include <string>
 using namespace std;
 
+#define delimiter "\n----------------------\n"
+
 class Human
 {
 	string first_name;
@@ -42,13 +44,13 @@ public:
 		cout << "HConstructor:\t" << this << endl;
 	}
 
-	~Human()
+	virtual ~Human()
 	{
 		cout << "HDestructor:\t" << this << endl;
 	}
 
 	//Methods:
-	void info()
+	virtual void info()
 	{
 		cout << last_name << " " << first_name << " " << age << " лет.\n";
 	}
@@ -119,9 +121,10 @@ public:
 
 class Teacher :public Human
 {
-	string faculty;
-	unsigned int hours;
-	unsigned int qt_groups;
+	string faculty; // факультатив
+	unsigned int hours; // часы
+	unsigned int qt_groups; // количество групп
+	unsigned int experience; // стаж
 public:
 	const string& get_faculty() const
 	{
@@ -135,6 +138,10 @@ public:
 	{
 		return this->qt_groups;
 	}
+	unsigned int get_experience() const
+	{
+		return this->experience;
+	}
 	void set_faculty(const string& faculty)
 	{
 		this->faculty = faculty;
@@ -147,13 +154,19 @@ public:
 	{
 		this->qt_groups = qt_groups;
 	}
+	void set_experience(unsigned int experience)
+	{
+		this->experience = experience;
+	}
 
 	//Constructors:
-	Teacher(const string& first_name, const string& last_name, unsigned int age, const string& faculty, unsigned int qt_groups, unsigned int hours) :Human(first_name, last_name, age)
+	Teacher(const string& first_name, const string& last_name, unsigned int age,
+		const string& faculty, unsigned int qt_groups, unsigned int hours, unsigned int experience) :Human(first_name, last_name, age)
 	{
 		this->faculty = faculty;
 		this->qt_groups = qt_groups;
 		this->hours = hours;
+		this->experience = experience;
 		cout << "TConstructor\t" << this << endl;
 	}
 	~Teacher()
@@ -165,15 +178,20 @@ public:
 	void info()
 	{
 		Human::info();
-		cout << faculty << " " << hours << " часов" << endl;
+		cout << faculty << " " << hours << " часов, общий стаж: " << experience << " год/а" <<endl;
 	}
 };
 
 class Graduate :public Student
 {
-	unsigned int done_exam;
-	unsigned int tails;
+	string dyp_name; // Тема дипломной
+	unsigned int done_exam; // Готовые экзамены
+	unsigned int tails; // Хвосты)
 public:
+	const string& get_dyp_name() const
+	{
+		return this->dyp_name;
+	}
 	unsigned int get_done_exam() const
 	{
 		return this->done_exam;
@@ -181,6 +199,10 @@ public:
 	unsigned int get_tails() const
 	{
 		return this->tails;
+	}
+	void set_dyp_name(const string& dyp_name)
+	{
+		this->dyp_name = dyp_name;
 	}
 	void set_done_exam(unsigned int done_exam)
 	{
@@ -194,10 +216,11 @@ public:
 	//Constructors
 	Graduate(const string& first_name, const string& last_name, unsigned int age,
 		const string& specialty, const string& group, unsigned int year, unsigned int rating,
-		unsigned int done_exam, unsigned int tails) :Student(first_name, last_name, age, specialty, group, year, rating)
+		unsigned int done_exam, unsigned int tails, const string& dyp_name) :Student(first_name, last_name, age, specialty, group, year, rating)
 	{
 		this->done_exam = done_exam;
 		this->tails = tails;
+		this->dyp_name = dyp_name;
 		cout << "GConstructor\t" << this << endl;
 	}
 	~Graduate()
@@ -209,19 +232,50 @@ public:
 	void info()
 	{
 		Student::info();
-		cout << "Сдал зачетов: " << done_exam << " Хвосты: " << tails << endl;
+		cout << "Сдал зачетов: " << done_exam << " Хвосты: " << tails << " \nTема дипломной работы: " << dyp_name <<endl;
 	}
 };
 
 void main()
 {
 	setlocale(LC_ALL, "");
-	Human h("Василий", "Дурко", 21);
+	/*Human h("Василий", "Дурко", 21);
 	h.info();
 	Student s("Иван", "Тупенко", 18, "Девелупер", "СТ ПУ 34а", 1, 0);
 	s.info();
-	Teacher t("Григорий", "Мастеренко", 45, "1С", 6, 1000);
+	Teacher t("Григорий", "Мастеренко", 45, "1С", 6, 1000, 3);
 	t.info();
-	Graduate g("Петро", "Сашко", 19, "Девелупер", "СТ ПУ 34а", 3, 3400, 1, 49);
+	Graduate g("Петро", "Сашко", 19, "Девелупер", "СТ ПУ 34а", 3, 3400, 1, 49,
+			   "\"Самообучение искуственного интелекта: плюсы и минусы\"");
 	g.info();
+
+	Human* pt = &t;
+	Human* pg = &g;
+	cout << "\n------------------------\n";
+	pt->info();
+	pg->info();
+	Human(*pt).info();
+	Human(*pg).info();
+	cout << "\n------------------------\n";*/
+	Human* group[] =
+	{
+		new Graduate("Виталий", "Гавриш", 20, "РПО", "СТ ПУ 34а", 1, 100, 10, 10, "Самообучение исскуственного интелекта: плюсы и минусы"),
+		new Student("Юлия", "Рыбакова", 18, "РПО", "СТ ПУ 34а", 1, 70),
+		new Teacher("Андрей", "Кобылинский", 40, "HardwarePC", 4, 200, 18),
+		new Student("Евгений", "Ковтун", 18, "РПО", "СТ ПУ 34а", 1, 70),
+		new Graduate("Марианна", "Забрянская", 17, "РПО", "СТ ПУ 34а", 1, 80, 12, 8, "Как разработать свою игру что бы тебя заметили"),
+		new Teacher("Роман", "Шерстюк", 30, "WebDev", 6, 160, 5)
+	};
+	
+	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
+	{
+		cout << delimiter << endl;
+		cout << typeid(*group[i]).name() << endl;
+		group[i]->info();
+	}
+	
+	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
+	{
+		delete group[i];
+	}
 }
