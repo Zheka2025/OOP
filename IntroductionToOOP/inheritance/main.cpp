@@ -56,6 +56,11 @@ public:
 	}
 };
 
+ostream& operator<<(ostream& os, const Human& obj)
+{
+	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " лет.\n";
+}
+
 class Student :public Human
 {
 	string specialty;
@@ -118,6 +123,12 @@ public:
 		cout << specialty << " " << group << " " << year << " курс, успеваемость " << rating << endl;
 	}
 };
+
+ostream& operator<<(ostream& os, const Student& obj)
+{
+	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " лет.\n" << 
+		obj.get_specialty() << " " << obj.get_group() << " " << obj.get_year() << " курс, успеваемость " << obj.get_rating() << endl;
+}
 
 class Teacher :public Human
 {
@@ -182,6 +193,12 @@ public:
 	}
 };
 
+ostream& operator<<(ostream& os, const Teacher& obj)
+{
+	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " лет.\n" <<
+		obj.get_faculty() << " " << obj.get_hours() << " часов, общий стаж: " << obj.get_experience() << " год/а" << endl;
+}
+
 class Graduate :public Student
 {
 	string dyp_name; // Тема дипломной
@@ -236,6 +253,13 @@ public:
 	}
 };
 
+ostream& operator<<(ostream& os, const Graduate& obj)
+{
+	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " лет.\n" <<
+		obj.get_specialty() << " " << obj.get_group() << " " << obj.get_year() << " курс, успеваемость " << obj.get_rating() << endl <<
+		"Сдал зачетов: " << obj.get_done_exam() << " Хвосты: " << obj.get_tails() << " \nTема дипломной работы: " << obj.get_dyp_name() << endl;
+}
+
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -271,9 +295,8 @@ void main()
 	{
 		cout << delimiter << endl;
 		cout << typeid(*group[i]).name() << endl;
-		group[i]->info();
+		cout << *group[i] << endl;
 	}
-	
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
 		delete group[i];
