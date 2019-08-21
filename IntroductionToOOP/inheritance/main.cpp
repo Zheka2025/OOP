@@ -56,7 +56,7 @@ public:
 	}
 };
 
-ostream& operator<<(ostream& os, const Human& obj)
+ostream& operator<<(ostream& os, const Human& obj) 
 {
 	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " лет.\n";
 }
@@ -122,12 +122,14 @@ public:
 		Human::info();
 		cout << specialty << " " << group << " " << year << " курс, успеваемость " << rating << endl;
 	}
+
+
 };
 
 ostream& operator<<(ostream& os, const Student& obj)
 {
-	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " лет.\n" << 
-		obj.get_specialty() << " " << obj.get_group() << " " << obj.get_year() << " курс, успеваемость " << obj.get_rating() << endl;
+	os << (Human)obj;
+	return os << obj.get_specialty() << " " << obj.get_group() << " " << obj.get_year() << " курс, успеваемость " << obj.get_rating() << endl;
 }
 
 class Teacher :public Human
@@ -195,8 +197,8 @@ public:
 
 ostream& operator<<(ostream& os, const Teacher& obj)
 {
-	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " лет.\n" <<
-		obj.get_faculty() << " " << obj.get_hours() << " часов, общий стаж: " << obj.get_experience() << " год/а" << endl;
+	os << (Human)obj;
+	return os << obj.get_faculty() << " " << obj.get_hours() << " часов, общий стаж: " << obj.get_experience() << " год/а" << endl;
 }
 
 class Graduate :public Student
@@ -253,11 +255,10 @@ public:
 	}
 };
 
-ostream& operator<<(ostream& os, const Graduate& obj)
+ostream& operator<<(ostream& os, const Graduate& obj) 
 {
-	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " лет.\n" <<
-		obj.get_specialty() << " " << obj.get_group() << " " << obj.get_year() << " курс, успеваемость " << obj.get_rating() << endl <<
-		"Сдал зачетов: " << obj.get_done_exam() << " Хвосты: " << obj.get_tails() << " \nTема дипломной работы: " << obj.get_dyp_name() << endl;
+	os << (Student)obj;
+	return os << "Сдал зачетов: " << obj.get_done_exam() << " Хвосты: " << obj.get_tails() << " \nTема дипломной работы: " << obj.get_dyp_name() << endl;
 }
 
 void main()
@@ -295,7 +296,19 @@ void main()
 	{
 		cout << delimiter << endl;
 		cout << typeid(*group[i]).name() << endl;
-		cout << *group[i] << endl;
+		if (typeid(*group[i]) == typeid(Student))
+		{
+			cout << *dynamic_cast<Student*>(group[i]) << endl;
+		}
+		if (typeid(*group[i]) == typeid(Teacher))
+		{
+			cout << *dynamic_cast<Teacher*>(group[i]) << endl;
+		}
+		if (typeid(*group[i]) == typeid(Graduate))
+		{
+			cout << *dynamic_cast<Graduate*>(group[i]) << endl;
+		}
+		/*cout << *group[i] << endl;*/
 	}
 	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
 	{
