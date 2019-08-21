@@ -44,6 +44,14 @@ public:
 		cout << "HConstructor:\t" << this << endl;
 	}
 
+	Human(Human& other)
+	{
+		this->first_name = other.first_name;
+		this->last_name = other.last_name;
+		this->age = other.age;
+		cout << "HCopyConstructo\t" << endl;
+	}
+
 	virtual ~Human()
 	{
 		cout << "HDestructor:\t" << this << endl;
@@ -54,6 +62,8 @@ public:
 	{
 		cout << last_name << " " << first_name << " " << age << " лет.\n";
 	}
+
+	virtual void some_method() = 0;
 };
 
 ostream& operator<<(ostream& os, const Human& obj) 
@@ -123,12 +133,16 @@ public:
 		cout << specialty << " " << group << " " << year << " курс, успеваемость " << rating << endl;
 	}
 
+	void some_method()
+	{
+		cout << "Превед я студенд" << endl;
+	}
 
 };
 
 ostream& operator<<(ostream& os, const Student& obj)
 {
-	os << (Human)obj;
+	os << (Human&)obj;
 	return os << obj.get_specialty() << " " << obj.get_group() << " " << obj.get_year() << " курс, успеваемость " << obj.get_rating() << endl;
 }
 
@@ -193,11 +207,16 @@ public:
 		Human::info();
 		cout << faculty << " " << hours << " часов, общий стаж: " << experience << " год/а" <<endl;
 	}
+
+	void some_method()
+	{
+		cout << "Сам превед" << endl;
+	}
 };
 
 ostream& operator<<(ostream& os, const Teacher& obj)
 {
-	os << (Human)obj;
+	os << (Human&)obj;
 	return os << obj.get_faculty() << " " << obj.get_hours() << " часов, общий стаж: " << obj.get_experience() << " год/а" << endl;
 }
 
@@ -257,7 +276,7 @@ public:
 
 ostream& operator<<(ostream& os, const Graduate& obj) 
 {
-	os << (Student)obj;
+	os << (Student&)obj;
 	return os << "Сдал зачетов: " << obj.get_done_exam() << " Хвосты: " << obj.get_tails() << " \nTема дипломной работы: " << obj.get_dyp_name() << endl;
 }
 
