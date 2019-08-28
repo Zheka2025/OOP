@@ -2,6 +2,7 @@
 using namespace std;
 
 #define tab "\t"
+#define delimiter "\n---------------------------\n"
 
 class Element
 {
@@ -56,11 +57,35 @@ public:
 	void push_back(int Data)
 	{
 		Element* Temp = Head;
-		while(Temp != nullptr)
+		while(Temp->pNext != nullptr)
 		{
 			Temp = Temp->pNext;
 		}
-		Temp = new Element(Data);
+		Temp->pNext = new Element(Data);
+		
+	}
+
+	void pop_front()
+	{
+		Element* Temp = Head;
+		Temp = Temp->pNext;
+		delete Head;
+		Head = Temp;
+	}
+	void pop_back()
+	{
+		Element* Temp = Head;
+		while (Temp->pNext != nullptr)
+		{
+			Temp = Temp->pNext;
+		}
+		Temp->Data = NULL;
+		Temp = Head;
+		while (Temp->pNext->Data != NULL)
+		{
+			Temp = Temp->pNext;
+		}
+		Temp->pNext = nullptr;
 	}
 };
 
@@ -76,7 +101,14 @@ void main()
 		fl.push_front(rand() % 100);
 	}
 	fl.print();
+	cout << delimiter;
 	fl.push_back(77);
 	fl.print();
-	
+	cout << delimiter;
+	fl.pop_front();
+	fl.print();
+	cout << delimiter;
+	fl.pop_back();
+	fl.print();
+	cout << delimiter;
 }
