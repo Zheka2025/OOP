@@ -3,6 +3,8 @@ using namespace std;
 
 #define tab "\t"
 #define delimiter "\n---------------------------\n"
+//#define BASE_CHECK
+#define DEBUG
 
 class Element
 {
@@ -15,12 +17,18 @@ public:
 		this->Data = Data;
 		this->pNext = pNext;
 		count++;
+#ifdef DEBUG
 		cout << "EConstructor:\t" << this << endl;
+#endif // DEBUG
+
 	}
 	~Element()
 	{
 		count--;
+#ifdef DEBUG
 		cout << "Edestructor:\t" << this << endl;
+#endif // DEBUG
+
 	}
 	friend class ForwardList;
 };
@@ -32,22 +40,51 @@ class ForwardList
 	Element* Head;
 	unsigned int size;
 public:
+
+	const int& get_size() const
+	{
+		return size;
+	}
+
 	ForwardList()
 	{
 		this->size = 0;
 		this->Head = nullptr;
-		cout << "LConstructor:\t"<< this << endl;
+#ifdef DEBUG
+		cout << "LConstructor:\t" << this << endl;
+#endif // DEBUG
+
+	}
+
+	ForwardList(int n) :ForwardList()
+	{
+		/*this->size = 0;
+		this->Head = nullptr;*/
+		for (int i = 0; i < n; i++)
+		{
+			push_front(0);
+		}
+#ifdef DEBUG
+		cout << "LConstrSize\t" << this << endl;
+#endif // DEBUG
+
 	}
 	~ForwardList()
 	{
+		while (Head)pop_front();
+#ifdef DEBUG
 		cout << "LDestructor:\t" << this << endl;
+#endif // DEBUG
+
 	}
+
 
 	void push_front(int Data)
 	{
-		Element* New = new Element(Data);
+		/*Element* New = new Element(Data);
 		New->pNext = Head;
-		Head = New;
+		Head = New;*/
+		Head = new Element(Data, Head);
 		size++;
 	}
 
@@ -95,9 +132,10 @@ public:
 		{
 			Temp = Temp->pNext;
 		}
-		Element* New = new Element(Data);
+		Temp->pNext = new Element(Data, Temp->pNext);
+		/*Element* New = new Element(Data);
 		New->pNext = Temp->pNext;
-		Temp->pNext = New;
+		Temp->pNext = New;*/
 		size++;
 	}
 
@@ -128,6 +166,10 @@ public:
 			cout << "Eror: Out of range." << endl;
 			return;
 		}
+		if (index == 0)
+		{
+		 	return pop_front();
+		}
 		Element* Temp = Head;
 		for (int i = 0; i < index - 1; i++)
 		{
@@ -138,7 +180,16 @@ public:
 		delete buff;
 		size--;
 	}
+
+	//Operators
+	int& operator[](int index)
+	{
+		Element* Temp = Head;
+		for (int i = 0; i < index; i++) Temp = Temp->pNext;
+		return Temp->Data;
+    }
 };
+
 
 
 
@@ -148,6 +199,8 @@ void main()
 	int n;
 	cout << "Введите количество элементов: ";
 	cin >> n;
+
+#ifdef BASE_CHECK
 	ForwardList fl;
 	for (int i = 0; i < n; i++)
 	{
@@ -155,7 +208,7 @@ void main()
 	}
 	fl.print();
 	cout << delimiter;
-	fl.push_back(77);
+	/*fl.push_back(77);
 	fl.print();
 	cout << delimiter;
 	fl.pop_front();
@@ -174,11 +227,22 @@ void main()
 	cout << "Введите индекс удаляемого елемента: "; cin >> index;
 	fl.erase(index);
 	fl.print();
-	cout << delimiter;
+	cout << delimiter;*/
 
-	ForwardList fl2;
+	/*ForwardList fl2;
 	fl2.push_back(3);
 	fl2.push_back(5);
 	fl2.push_back(8);
-	fl2.print();
+	fl2.print();*/
+#endif // BASE_CHECK
+
+	ForwardList fl(n);
+	fl.print();
+
+	for (int i = 0; i < 10; i++)
+	{
+		fl[i] = rand() % 100;
+		cout << fl[i] << tab;
+	}
+	cout << endl;
 }
