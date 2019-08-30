@@ -121,7 +121,23 @@ public:
 		Temp->pNext = nullptr;
 		size--;
 	}
-
+	void erase(int index)
+	{
+		if (index > size)
+		{
+			cout << "Eror: Out of range." << endl;
+			return;
+		}
+		Element* Temp = Head;
+		for (int i = 0; i < index - 1; i++)
+		{
+			Temp = Temp->pNext;
+		}
+		Element* buff = Temp->pNext;
+		Temp->pNext = Temp->pNext->pNext;
+		delete buff;
+		size--;
+	}
 };
 
 
@@ -154,6 +170,11 @@ void main()
 	cout << "введите значение добавляемого элемента: "; cin >> data;
 	fl.insert(index, data);
 	fl.print();
+	cout << delimiter;
+	cout << "Введите индекс удаляемого елемента: "; cin >> index;
+	fl.erase(index);
+	fl.print();
+	cout << delimiter;
 
 	ForwardList fl2;
 	fl2.push_back(3);
