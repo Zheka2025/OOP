@@ -69,6 +69,14 @@ public:
 #endif // DEBUG
 
 	}
+	ForwardList(const ForwardList& other)
+	{
+		this->Head = other.Head;
+		this->size = other.size;
+#ifdef DEBUG
+		cout << "LCopyConstructor\t" << this << endl;
+#endif // DEBUG
+	}
 	~ForwardList()
 	{
 		while (Head)pop_front();
@@ -188,8 +196,14 @@ public:
 		for (int i = 0; i < index; i++) Temp = Temp->pNext;
 		return Temp->Data;
     }
-};
+	ForwardList& operator=(const ForwardList& other)
+	{
 
+		this->Head = other.Head;
+		this->size = other.size;
+		cout << "CopyAssignma\t" << this << endl;
+	}
+};	
 
 
 
