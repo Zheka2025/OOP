@@ -5,7 +5,11 @@ using namespace std;
 #define delimiter "\n---------------------------\n"
 //#define BASE_CHECK
 #define DEBUG
+//#define INDEX_OPERATOR_CHECK
 
+
+class ForwardList
+{
 class Element
 {
 	int Data;
@@ -30,20 +34,57 @@ public:
 #endif // DEBUG
 
 	}
+
+	//operators
+	operator int&()
+	{
+		return this->Data;
+	}
+	operator const int&() const
+	{
+		return this->Data;
+	}
 	friend class ForwardList;
 };
-
-int Element::count = 0;
-
-class ForwardList
-{
 	Element* Head;
 	unsigned int size;
 public:
-
+	class Iterator
+	{
+		Element* Temp;
+	public:
+		Iterator(Element* Temp = nullptr) :Temp(Temp)
+		{
+			cout << "ItConstructor:\t" << this << endl;
+		}
+		~Iterator() 
+		{
+			cout << "ItDestructor:\t" << this << endl;
+		}
+		Iterator& operator++()
+		{
+			Temp = Temp->pNext;
+			return *this;
+		}
+		Iterator operator++(int)
+		{
+			Iterator old = *this;
+			Temp = Temp->pNext;
+			return old;
+		}
+	};
 	const int& get_size() const
 	{
 		return size;
+	}
+
+	Element* begin()
+	{
+		return Head;
+	}
+	Element* end()
+	{
+		return nullptr;
 	}
 
 	ForwardList()
@@ -69,14 +110,22 @@ public:
 #endif // DEBUG
 
 	}
-	ForwardList(const ForwardList& other)
+	ForwardList(const ForwardList& other) : ForwardList()
 	{
-		this->Head = other.Head;
-		this->size = other.size;
+		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)
+			push_back(Temp->Data);
 #ifdef DEBUG
 		cout << "LCopyConstructor\t" << this << endl;
 #endif // DEBUG
 	}
+
+	ForwardList(initializer_list<int> il) :ForwardList()
+	{
+		cout << typeid(il.begin()).name() << endl;
+		for (int const* it = il.begin(); it != il.end(); it++)
+			push_back(*it);
+	}
+
 	~ForwardList()
 	{
 		while (Head)pop_front();
@@ -123,7 +172,7 @@ public:
 		size++;
 	} 
 
-	void insert(int index, int Data)
+	void insert(unsigned int index, int Data)
 	{
 		if (index > size)
 		{
@@ -198,12 +247,18 @@ public:
     }
 	ForwardList& operator=(const ForwardList& other)
 	{
-
-		this->Head = other.Head;
-		this->size = other.size;
-		cout << "CopyAssignma\t" << this << endl;
+		if (this == &other)return *this;
+		while (Head)pop_front();
+		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)
+			push_back(Temp->Data);
+#ifdef DEBUG
+		cout << "LCopyAssignment\t" << this << endl;
+#endif // DEBUG
+		return *this;
 	}
 };	
+
+int ForwardList::Element::count = 0;
 
 
 
@@ -249,6 +304,7 @@ void main()
 	fl2.push_back(8);
 	fl2.print();*/
 #endif // BASE_CHECK
+#ifdef INDEX_OPERATOR_CHECK
 
 	ForwardList fl(n);
 	fl.print();
@@ -257,6 +313,21 @@ void main()
 	{
 		fl[i] = rand() % 100;
 		cout << fl[i] << tab;
+	}
+	cout << endl;
+#endif // INDEX_OPERATOR_CHECK
+	/*ForwardList fl = { 3, 5, 6, 8, 8, 10 };
+	fl.print();
+	ForwardList fl2 = fl;
+	fl2.print();
+	fl2 = fl;
+	fl2.print();
+	fl = fl;
+	fl.print();*/
+	ForwardList fl = { 3, 4, 5, 6, 7 };
+	for (int i : fl)
+	{
+		cout << i << tab;
 	}
 	cout << endl;
 }
