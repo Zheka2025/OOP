@@ -1,52 +1,48 @@
 #include<iostream>
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 
 #define tab "\t"
-#define delimiter "\n---------------------------\n"
+
 //#define BASE_CHECK
-#define DEBUG
 //#define INDEX_OPERATOR_CHECK
+//#define CONSTRUCTORS_CHECK
+
 
 
 class ForwardList
 {
-class Element
-{
-	int Data;
-	Element* pNext;
-	static int count;
-public:
-	Element(int Data, Element* pNext = nullptr)
+	class Element
 	{
-		this->Data = Data;
-		this->pNext = pNext;
-		count++;
-#ifdef DEBUG
-		cout << "EConstructor:\t" << this << endl;
-#endif // DEBUG
-
-	}
-	~Element()
-	{
-		count--;
-#ifdef DEBUG
-		cout << "Edestructor:\t" << this << endl;
-#endif // DEBUG
-
-	}
-
-	//operators
-	operator int&()
-	{
-		return this->Data;
-	}
-	operator const int&() const
-	{
-		return this->Data;
-	}
-	friend class ForwardList;
-};
-	Element* Head;
+		int Data;		//Значение элемента
+		Element* pNext;	//Адрес следующего элемента
+		static int count;
+	public:
+		Element(int Data, Element* pNext = nullptr)
+		{
+			this->Data = Data;
+			this->pNext = pNext;
+			count++;
+			cout << "EConstructor:\t" << this << endl;
+		}
+		~Element()
+		{
+			count--;
+			cout << "EDestructor:\t" << this << endl;
+		}
+		operator const int&()const
+		{
+			return this->Data;
+		}
+		operator int&()
+		{
+			return this->Data;
+		}
+		friend class ForwardList;
+	};
+	Element* Head;	//Указатель на начало списка
 	unsigned int size;
 public:
 	class Iterator
@@ -57,7 +53,7 @@ public:
 		{
 			cout << "ItConstructor:\t" << this << endl;
 		}
-		~Iterator() 
+		~Iterator()
 		{
 			cout << "ItDestructor:\t" << this << endl;
 		}
@@ -72,90 +68,104 @@ public:
 			Temp = Temp->pNext;
 			return old;
 		}
+		const int& operator*()const
+		{
+			return Temp->Data;
+		}
+		int& operator*()
+		{
+			return Temp->Data;
+		}
+		bool operator==(const Iterator& other)
+		{
+			return this->Temp == other.Temp;
+		}
+		bool operator!=(const Iterator& other)
+		{
+			return this->Temp != other.Temp;
+		}
 	};
-	const int& get_size() const
+	const int get_size()const
 	{
-		return size;
+		return this->size;
 	}
 
-	Element* begin()
+	const Iterator begin()const
 	{
 		return Head;
 	}
-	Element* end()
+	Iterator begin()
+	{
+		return Head;
+	}
+
+	const Iterator end() const
+	{
+		return nullptr;
+	}
+	Iterator end()
 	{
 		return nullptr;
 	}
 
 	ForwardList()
 	{
-		this->size = 0;
 		this->Head = nullptr;
-#ifdef DEBUG
+		this->size = 0;
 		cout << "LConstructor:\t" << this << endl;
-#endif // DEBUG
-
 	}
-
-	ForwardList(int n) :ForwardList()
+	ForwardList(int size) :ForwardList()
 	{
-		/*this->size = 0;
-		this->Head = nullptr;*/
-		for (int i = 0; i < n; i++)
-		{
-			push_front(0);
-		}
-#ifdef DEBUG
-		cout << "LConstrSize\t" << this << endl;
-#endif // DEBUG
-
+		/*this->Head = nullptr;
+		this->size = 0;*/
+		while (size--)push_front(0);
 	}
-	ForwardList(const ForwardList& other) : ForwardList()
-	{
-		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)
-			push_back(Temp->Data);
-#ifdef DEBUG
-		cout << "LCopyConstructor\t" << this << endl;
-#endif // DEBUG
-	}
-
 	ForwardList(initializer_list<int> il) :ForwardList()
 	{
 		cout << typeid(il.begin()).name() << endl;
 		for (int const* it = il.begin(); it != il.end(); it++)
 			push_back(*it);
 	}
-
+	ForwardList(const ForwardList& other) :ForwardList()
+	{
+		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)
+			push_back(Temp->Data);
+		cout << "LCopyConstruct:\t" << this << endl;
+	}
 	~ForwardList()
 	{
 		while (Head)pop_front();
-#ifdef DEBUG
 		cout << "LDestructor:\t" << this << endl;
-#endif // DEBUG
-
 	}
 
+	//			Operators:
+	ForwardList& operator=(const ForwardList& other)
+	{
+		if (this == &other)return *this;
+		while (Head)pop_front();
+		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)
+			push_back(Temp->Data);
+		cout << "LCopyAssignment:\t" << this << endl;
+		return *this;
+	}
+	int& operator[](int index)
+	{
+		Element* Temp = Head;
+		for (int i = 0; i < index; i++)Temp = Temp->pNext;
+		return Temp->Data;
+	}
 
+	//			Добавление элементов в список:
 	void push_front(int Data)
 	{
+		//Data - добавляемое значение.
+		//1) Создаем элемент, в который можно положить добавляемое значение:
 		/*Element* New = new Element(Data);
 		New->pNext = Head;
 		Head = New;*/
 		Head = new Element(Data, Head);
 		size++;
 	}
-
-	void print()
-	{
-		Element* Temp = Head; // Temp - Итератор
-		while (Temp != nullptr)
-		{
-			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-			Temp = Temp->pNext; // переход на следующий елемент
-		}
-		cout << "Количество элементов списка: " << size << endl;
-	}
-
 	void push_back(int Data)
 	{
 		if (Head == nullptr)
@@ -164,47 +174,44 @@ public:
 			return;
 		}
 		Element* Temp = Head;
-		while(Temp->pNext != nullptr)
-		{
-			Temp = Temp->pNext;
-		}
+		while (Temp->pNext != nullptr)Temp = Temp->pNext;
 		Temp->pNext = new Element(Data);
 		size++;
-	} 
+	}
 
-	void insert(unsigned int index, int Data)
+	void insert(int index, int data)
 	{
-		if (index > size)
-		{
-			cout << "Eror: Out of range." << endl;
-			return;
-		}
 		if (index == 0)
 		{
-			push_front(Data);
+			push_front(data);
+			return;
+		}
+		if (index > size)
+		{
+			cout << "Error: Out of range." << endl;
 			return;
 		}
 		Element* Temp = Head;
-		for (int i = 0; i < index-1; i++)
+		for (int i = 0; i < index - 1; i++)
 		{
 			Temp = Temp->pNext;
 		}
-		Temp->pNext = new Element(Data, Temp->pNext);
-		/*Element* New = new Element(Data);
+		/*Element* New = new Element(data);
 		New->pNext = Temp->pNext;
 		Temp->pNext = New;*/
+		Temp->pNext = new Element(data, Temp->pNext);
 		size++;
 	}
 
 	//Удаление элементов:
 	void pop_front()
 	{
-		Element* Temp = Head;
-		Temp = Temp->pNext;
-		delete Head;
-		Head = Temp;
+		Element* buffer = Head;
+		Head = Head->pNext;
+		delete buffer;
 		size--;
 	}
+
 	void pop_back()
 	{
 		Element* Temp = Head;
@@ -216,59 +223,81 @@ public:
 		Temp->pNext = nullptr;
 		size--;
 	}
+
 	void erase(int index)
 	{
-		if (index > size)
-		{
-			cout << "Eror: Out of range." << endl;
-			return;
-		}
 		if (index == 0)
 		{
-		 	return pop_front();
+			pop_front();
+			return;
+		}
+		if (index >= size)
+		{
+			cout << "Error: out of range" << endl;
+			return;
 		}
 		Element* Temp = Head;
-		for (int i = 0; i < index - 1; i++)
-		{
-			Temp = Temp->pNext;
-		}
-		Element* buff = Temp->pNext;
+		for (int i = 0; i < index - 1; i++)Temp = Temp->pNext;
+		Element* buffer = Temp->pNext;
+
 		Temp->pNext = Temp->pNext->pNext;
-		delete buff;
+		delete buffer;
 		size--;
 	}
 
-	//Operators
-	int& operator[](int index)
+	void print()
 	{
-		Element* Temp = Head;
-		for (int i = 0; i < index; i++) Temp = Temp->pNext;
-		return Temp->Data;
-    }
-	ForwardList& operator=(const ForwardList& other)
-	{
-		if (this == &other)return *this;
-		while (Head)pop_front();
-		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)
-			push_back(Temp->Data);
-#ifdef DEBUG
-		cout << "LCopyAssignment\t" << this << endl;
-#endif // DEBUG
-		return *this;
+		//Element* Temp = Head;//Temp - Итератор.
+		////Итератор - это указатель, при помощи которого можно получить доступ
+		////к элементам структуры данных.
+		//while (Temp != nullptr)
+		//{
+		//	cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+		//	Temp = Temp->pNext;	//Переход на следующий элемент.
+		//}
+
+		for (Element* Temp = Head; Temp != nullptr; Temp = Temp->pNext)
+			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
+		cout << "Количество элементво списка: " << size << endl;
 	}
-};	
+};
 
 int ForwardList::Element::count = 0;
 
-
+ForwardList& operator+(const ForwardList& left, const ForwardList& right)
+{
+	ForwardList fl;
+	ForwardList::Iterator counter;
+	counter = left.begin();
+	for (ForwardList::Iterator it = left.begin();
+		it != right.end();
+		it++)
+	{
+		if (counter != left.end())
+		{
+			fl.push_back(*counter);
+			if (counter == left.end())
+			{
+				counter++;
+				counter = right.begin();
+				fl.push_back(*counter);
+			}
+			counter++;
+		}
+		else
+		{
+			fl.push_back(*counter);
+			counter++;
+		}
+	}
+	return fl;
+}
 
 void main()
 {
 	setlocale(LC_ALL, "");
-	int n;
-	cout << "Введите количество элементов: ";
-	cin >> n;
-
+	int n;		//Количество элементов
+	//cout << "Введите количество элементов: ";	cin >> n;
 #ifdef BASE_CHECK
 	ForwardList fl;
 	for (int i = 0; i < n; i++)
@@ -276,27 +305,19 @@ void main()
 		fl.push_front(rand() % 100);
 	}
 	fl.print();
-	cout << delimiter;
-	/*fl.push_back(77);
-	fl.print();
-	cout << delimiter;
-	fl.pop_front();
-	fl.print();
-	cout << delimiter;
-	fl.pop_back();
-	fl.print();
-	cout << delimiter;
+	fl.push_back(123);	fl.print();
+	fl.pop_back();	fl.print();
+
 	int index;
 	int data;
 	cout << "Введите индекс добавляемого элемента: "; cin >> index;
-	cout << "введите значение добавляемого элемента: "; cin >> data;
+	cout << "Введите значение добавляемого элемента: "; cin >> data;
 	fl.insert(index, data);
 	fl.print();
-	cout << delimiter;
-	cout << "Введите индекс удаляемого елемента: "; cin >> index;
+
+	cout << "Введите индекс удавляемого элемента: "; cin >> index;
 	fl.erase(index);
 	fl.print();
-	cout << delimiter;*/
 
 	/*ForwardList fl2;
 	fl2.push_back(3);
@@ -304,30 +325,61 @@ void main()
 	fl2.push_back(8);
 	fl2.print();*/
 #endif // BASE_CHECK
-#ifdef INDEX_OPERATOR_CHECK
 
+#ifdef INDEX_OPERATOR_CHECK
+	//TODO: exception handling in []
 	ForwardList fl(n);
 	fl.print();
 
-	for (int i = 0; i < 10; i++)
+	cout << int() << endl;
+	for (int i = 0; i < fl.get_size(); i++)
 	{
 		fl[i] = rand() % 100;
+	}
+	for (int i = 0; i < 10; i++)
+	{
 		cout << fl[i] << tab;
 	}
 	cout << endl;
 #endif // INDEX_OPERATOR_CHECK
-	/*ForwardList fl = { 3, 5, 6, 8, 8, 10 };
+
+#ifdef CONSTRUCTORS_CHECK
+	ForwardList fl = { 3, 5, 8, 13, 21 };
 	fl.print();
-	ForwardList fl2 = fl;
-	fl2.print();
-	fl2 = fl;
-	fl2.print();
 	fl = fl;
-	fl.print();*/
-	ForwardList fl = { 3, 4, 5, 6, 7 };
+	fl.print();
+#endif
+
+	int Arr[] = { 3, 5, 8, 13, 21 };
+	for (int i = 0; i < sizeof(Arr) / sizeof(int); i++)
+	{
+		cout << Arr[i] << tab;
+	}
+	cout << endl;
+
+	for (int i : Arr)
+	{
+		cout << i << tab;
+	}
+	cout << endl;
+
+	char str[] = "Hello";
+	for (char i : str)
+		cout << i << tab;
+	cout << endl;
+	ForwardList fl = { 666, 5, 8, 13, 21 };
+	system("COLOR 0A");
 	for (int i : fl)
 	{
 		cout << i << tab;
 	}
 	cout << endl;
+	//cout << sizeof(ForwardList::Element) << endl;
+	ForwardList fl2 = { 12, 33, 41 };
+	ForwardList fl3;
+	fl3 = fl + fl2;
+	for (int i : fl3)
+	{
+		cout << i << endl;
+	}
 }
