@@ -10,8 +10,6 @@ using std::endl;
 //#define INDEX_OPERATOR_CHECK
 //#define CONSTRUCTORS_CHECK
 
-
-
 class ForwardList
 {
 	class Element
@@ -264,34 +262,39 @@ public:
 
 int ForwardList::Element::count = 0;
 
-ForwardList& operator+(const ForwardList& left, const ForwardList& right)
-{
-	ForwardList fl;
-	ForwardList::Iterator counter;
-	counter = left.begin();
-	for (ForwardList::Iterator it = left.begin();
-		it != right.end();
-		it++)
-	{
-		if (counter != left.end())
-		{
-			fl.push_back(*counter);
-			if (counter == left.end())
-			{
-				counter++;
-				counter = right.begin();
-				fl.push_back(*counter);
-			}
-			counter++;
-		}
-		else
-		{
-			fl.push_back(*counter);
-			counter++;
-		}
-	}
-	return fl;
-}
+//ForwardList& operator+(const ForwardList& left, const ForwardList& right)
+//{
+//	ForwardList fl;
+//	ForwardList::Iterator counter;
+//	counter = left.begin();
+//	for (ForwardList::Iterator it = left.begin();
+//		(it++) != right.end();)
+//	{
+//		if (counter != left.end())
+//		{
+//			fl.push_back(*counter);
+//			counter++;
+//			it++;
+//			if (counter == left.end())
+//			{
+//				counter = right.begin();
+//				fl.push_back(*counter);
+//				counter++;
+//				it = right.begin();
+//				it++;
+//			}
+//		}
+//		else
+//		{
+//			fl.push_back(*counter);
+//			counter++;
+//			it++;
+//		}
+//	}
+//	return fl;
+//}
+
+
 
 void main()
 {
