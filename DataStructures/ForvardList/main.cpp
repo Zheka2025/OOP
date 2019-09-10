@@ -132,6 +132,12 @@ public:
 			push_back(Temp->Data);
 		cout << "LCopyConstruct:\t" << this << endl;
 	}
+	ForwardList(const ForwardList&& other) : ForwardList()
+	{
+		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)
+			push_back(Temp->Data);
+		cout << "LCopyConstruct:\t" << this << endl;
+	}
 	~ForwardList()
 	{
 		while (Head)pop_front();
@@ -140,6 +146,15 @@ public:
 
 	//			Operators:
 	ForwardList& operator=(const ForwardList& other)
+	{
+		if (this == &other)return *this;
+		while (Head)pop_front();
+		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)
+			push_back(Temp->Data);
+		cout << "LCopyAssignment:\t" << this << endl;
+		return *this;
+	}
+	ForwardList& operator=(const ForwardList&& other)
 	{
 		if (this == &other)return *this;
 		while (Head)pop_front();
