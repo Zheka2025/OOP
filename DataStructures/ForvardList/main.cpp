@@ -1,4 +1,4 @@
-#include<iostream>
+п»ї#include<iostream>
 using namespace std;
 using std::cin;
 using std::cout;
@@ -10,12 +10,14 @@ using std::endl;
 //#define INDEX_OPERATOR_CHECK
 //#define CONSTRUCTORS_CHECK
 
+
+
 class ForwardList
 {
 	class Element
 	{
-		int Data;		//Значение элемента
-		Element* pNext;	//Адрес следующего элемента
+		int Data;		//Г‡Г­Г Г·ГҐГ­ГЁГҐ ГЅГ«ГҐГ¬ГҐГ­ГІГ 
+		Element* pNext;	//ГЂГ¤Г°ГҐГ± Г±Г«ГҐГ¤ГіГѕГ№ГҐГЈГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ 
 		static int count;
 	public:
 		Element(int Data, Element* pNext = nullptr)
@@ -40,7 +42,7 @@ class ForwardList
 		}
 		friend class ForwardList;
 	};
-	Element* Head;	//Указатель на начало списка
+	Element* Head;	//Г“ГЄГ Г§Г ГІГҐГ«Гј Г­Г  Г­Г Г·Г Г«Г® Г±ГЇГЁГ±ГЄГ 
 	unsigned int size;
 public:
 	class Iterator
@@ -153,11 +155,11 @@ public:
 		return Temp->Data;
 	}
 
-	//			Добавление элементов в список:
+	//			Г„Г®ГЎГ ГўГ«ГҐГ­ГЁГҐ ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў Гў Г±ГЇГЁГ±Г®ГЄ:
 	void push_front(int Data)
 	{
-		//Data - добавляемое значение.
-		//1) Создаем элемент, в который можно положить добавляемое значение:
+		//Data - Г¤Г®ГЎГ ГўГ«ГїГҐГ¬Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ.
+		//1) Г‘Г®Г§Г¤Г ГҐГ¬ ГЅГ«ГҐГ¬ГҐГ­ГІ, Гў ГЄГ®ГІГ®Г°Г»Г© Г¬Г®Г¦Г­Г® ГЇГ®Г«Г®Г¦ГЁГІГј Г¤Г®ГЎГ ГўГ«ГїГҐГ¬Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ:
 		/*Element* New = new Element(Data);
 		New->pNext = Head;
 		Head = New;*/
@@ -201,7 +203,7 @@ public:
 		size++;
 	}
 
-	//Удаление элементов:
+	//Г“Г¤Г Г«ГҐГ­ГЁГҐ ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў:
 	void pop_front()
 	{
 		Element* buffer = Head;
@@ -245,62 +247,36 @@ public:
 
 	void print()
 	{
-		//Element* Temp = Head;//Temp - Итератор.
-		////Итератор - это указатель, при помощи которого можно получить доступ
-		////к элементам структуры данных.
+		//Element* Temp = Head;//Temp - Г€ГІГҐГ°Г ГІГ®Г°.
+		////Г€ГІГҐГ°Г ГІГ®Г° - ГЅГІГ® ГіГЄГ Г§Г ГІГҐГ«Гј, ГЇГ°ГЁ ГЇГ®Г¬Г®Г№ГЁ ГЄГ®ГІГ®Г°Г®ГЈГ® Г¬Г®Г¦Г­Г® ГЇГ®Г«ГіГ·ГЁГІГј Г¤Г®Г±ГІГіГЇ
+		////ГЄ ГЅГ«ГҐГ¬ГҐГ­ГІГ Г¬ Г±ГІГ°ГіГЄГІГіГ°Г» Г¤Г Г­Г­Г»Гµ.
 		//while (Temp != nullptr)
 		//{
 		//	cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-		//	Temp = Temp->pNext;	//Переход на следующий элемент.
+		//	Temp = Temp->pNext;	//ГЏГҐГ°ГҐГµГ®Г¤ Г­Г  Г±Г«ГҐГ¤ГіГѕГ№ГЁГ© ГЅГ«ГҐГ¬ГҐГ­ГІ.
 		//}
 
 		for (Element* Temp = Head; Temp != nullptr; Temp = Temp->pNext)
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-		cout << "Количество элементво списка: " << size << endl;
+		cout << "ГЉГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЅГ«ГҐГ¬ГҐГ­ГІГўГ® Г±ГЇГЁГ±ГЄГ : " << size << endl;
 	}
 };
 
 int ForwardList::Element::count = 0;
 
-//ForwardList& operator+(const ForwardList& left, const ForwardList& right)
-//{
-//	ForwardList fl;
-//	ForwardList::Iterator counter;
-//	counter = left.begin();
-//	for (ForwardList::Iterator it = left.begin();
-//		(it++) != right.end();)
-//	{
-//		if (counter != left.end())
-//		{
-//			fl.push_back(*counter);
-//			counter++;
-//			it++;
-//			if (counter == left.end())
-//			{
-//				counter = right.begin();
-//				fl.push_back(*counter);
-//				counter++;
-//				it = right.begin();
-//				it++;
-//			}
-//		}
-//		else
-//		{
-//			fl.push_back(*counter);
-//			counter++;
-//			it++;
-//		}
-//	}
-//	return fl;
-//}
-
-
+ForwardList operator+(const ForwardList& left, const ForwardList& right)
+{
+	ForwardList cat = left;
+	for (ForwardList::Iterator it = right.begin(); it != right.end(); it++)
+		cat.push_back(*it);
+	return cat;
+}
 
 void main()
 {
 	setlocale(LC_ALL, "");
-	int n;		//Количество элементов
-	//cout << "Введите количество элементов: ";	cin >> n;
+	int n;		//ГЉГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў
+	//cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ®Гў: ";	cin >> n;
 #ifdef BASE_CHECK
 	ForwardList fl;
 	for (int i = 0; i < n; i++)
@@ -313,12 +289,12 @@ void main()
 
 	int index;
 	int data;
-	cout << "Введите индекс добавляемого элемента: "; cin >> index;
-	cout << "Введите значение добавляемого элемента: "; cin >> data;
+	cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЁГ­Г¤ГҐГЄГ± Г¤Г®ГЎГ ГўГ«ГїГҐГ¬Г®ГЈГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ : "; cin >> index;
+	cout << "Г‚ГўГҐГ¤ГЁГІГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ Г¤Г®ГЎГ ГўГ«ГїГҐГ¬Г®ГЈГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ : "; cin >> data;
 	fl.insert(index, data);
 	fl.print();
 
-	cout << "Введите индекс удавляемого элемента: "; cin >> index;
+	cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЁГ­Г¤ГҐГЄГ± ГіГ¤Г ГўГ«ГїГҐГ¬Г®ГЈГ® ГЅГ«ГҐГ¬ГҐГ­ГІГ : "; cin >> index;
 	fl.erase(index);
 	fl.print();
 
@@ -370,7 +346,8 @@ void main()
 	for (char i : str)
 		cout << i << tab;
 	cout << endl;
-	ForwardList fl = { 666, 5, 8, 13, 21 };
+
+	ForwardList fl = { 3, 5, 8, 13, 21 };
 	system("COLOR 0A");
 	for (int i : fl)
 	{
@@ -378,11 +355,11 @@ void main()
 	}
 	cout << endl;
 	//cout << sizeof(ForwardList::Element) << endl;
-	ForwardList fl2 = { 12, 33, 41 };
-	ForwardList fl3;
-	fl3 = fl + fl2;
+	ForwardList fl2 = { 34, 55, 89 };
+	ForwardList fl3 = fl + fl2;
 	for (int i : fl3)
 	{
-		cout << i << endl;
+		cout << i << tab;
 	}
+	cout << endl;
 }
