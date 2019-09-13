@@ -113,7 +113,7 @@ public:
 		this->Head = nullptr;
 		this->size = 0;
 		cout << "LConstructor:\t" << this << endl;
-	}
+	} 
 	ForwardList(int size) :ForwardList()
 	{
 		/*this->Head = nullptr;
