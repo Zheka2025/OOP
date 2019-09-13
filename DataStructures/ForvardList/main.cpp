@@ -11,16 +11,16 @@ using std::endl;
 //#define CONSTRUCTORS_CHECK
 
 
-
+template <typename T>
 class ForwardList
 {
 	class Element
 	{
-		int Data;		//Çíà÷åíèå ýëåìåíòà
+		T Data;		//Çíà÷åíèå ýëåìåíòà
 		Element* pNext;	//Àäðåñ ñëåäóþùåãî ýëåìåíòà
 		static int count;
 	public:
-		Element(int Data, Element* pNext = nullptr)
+		Element(T Data, Element* pNext = nullptr)
 		{
 			this->Data = Data;
 			this->pNext = pNext;
@@ -32,11 +32,11 @@ class ForwardList
 			count--;
 			cout << "EDestructor:\t" << this << endl;
 		}
-		operator const int&()const
+		operator const T&()const
 		{
 			return this->Data;
 		}
-		operator int&()
+		operator T&()
 		{
 			return this->Data;
 		}
@@ -120,10 +120,10 @@ public:
 		this->size = 0;*/
 		while (size--)push_front(0);
 	}
-	ForwardList(initializer_list<int> il) :ForwardList()
+	ForwardList(initializer_list<T> il) :ForwardList()
 	{
 		cout << typeid(il.begin()).name() << endl;
-		for (int const* it = il.begin(); it != il.end(); it++)
+		for (T const* it = il.begin(); it != il.end(); it++)
 			push_back(*it);
 	}
 	ForwardList(const ForwardList& other) :ForwardList()
@@ -156,7 +156,7 @@ public:
 	}
 
 	//			Äîáàâëåíèå ýëåìåíòîâ â ñïèñîê:
-	void push_front(int Data)
+	void push_front(T Data)
 	{
 		//Data - äîáàâëÿåìîå çíà÷åíèå.
 		//1) Ñîçäàåì ýëåìåíò, â êîòîðûé ìîæíî ïîëîæèòü äîáàâëÿåìîå çíà÷åíèå:
@@ -166,7 +166,7 @@ public:
 		Head = new Element(Data, Head);
 		size++;
 	}
-	void push_back(int Data)
+	void push_back(T Data)
 	{
 		if (Head == nullptr)
 		{
@@ -179,7 +179,7 @@ public:
 		size++;
 	}
 
-	void insert(int index, int data)
+	void insert(int index, T data)
 	{
 		if (index == 0)
 		{
@@ -258,19 +258,21 @@ public:
 
 		for (Element* Temp = Head; Temp != nullptr; Temp = Temp->pNext)
 			cout << Temp << tab << Temp->Data << tab << Temp->pNext << endl;
-		cout << "Êîëè÷åñòâî ýëåìåíòâî ñïèñêà: " << size << endl;
+		cout << "Длинна списка: " << size << endl;
+	}
+	friend ForwardList<T> operator+(const ForwardList<T>& left, const ForwardList<T>& right)
+	{
+		ForwardList<T> cat = left;
+		for (ForwardList<T>::Iterator it = right.begin(); it != right.end(); it++)
+			cat.push_back(*it);
+		return cat;
 	}
 };
 
-int ForwardList::Element::count = 0;
+template <typename T>
+int ForwardList<T>::Element::count = 0;
 
-ForwardList operator+(const ForwardList& left, const ForwardList& right)
-{
-	ForwardList cat = left;
-	for (ForwardList::Iterator it = right.begin(); it != right.end(); it++)
-		cat.push_back(*it);
-	return cat;
-}
+//template <typename T>
 
 void main()
 {
@@ -347,7 +349,7 @@ void main()
 		cout << i << tab;
 	cout << endl;
 
-	ForwardList fl = { 3, 5, 8, 13, 21 };
+	ForwardList <int>fl = { 3, 5, 8, 13, 21 };
 	system("COLOR 0A");
 	for (int i : fl)
 	{
@@ -355,11 +357,14 @@ void main()
 	}
 	cout << endl;
 	//cout << sizeof(ForwardList::Element) << endl;
-	ForwardList fl2 = { 34, 55, 89 };
-	ForwardList fl3 = fl + fl2;
+	ForwardList <int>fl2 = { 34, 55, 89 };
+	ForwardList <int>fl3 = fl + fl2;
 	for (int i : fl3)
 	{
 		cout << i << tab;
 	}
 	cout << endl;
+
+	ForwardList <double> lst_dbl = { 2.5 , 4.6, 8.9, 1.5 };
+	lst_dbl.print();
 }
