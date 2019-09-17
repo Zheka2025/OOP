@@ -136,6 +136,68 @@ public:
 		if (Root == nullptr) return 0;
 		return count(Root->pLeft) + count(Root->pRight) + 1;
 	}
+
+	int sum()
+	{
+		return sum(this->Root);
+	}
+
+	int sum(Element* Root)
+	{
+		if (Root == nullptr) return 0;
+		return ((Root->pLeft != nullptr) ? sum(Root->pLeft) : 0) + ((Root->pRight != nullptr) ? sum(Root->pRight) : 0) + Root->Data;
+	} 
+
+	double avg()
+	{
+		return avg(this->Root);
+	}
+
+	double avg(Element* Root)
+	{
+		return (double)sum() / (double)count();
+	}
+
+	void erase(int Data)
+	{
+		erase(Data, this->Root);
+	}
+
+	void erase(int Data, Element* Root)
+	{
+		Element* buffer;
+		if (Root == nullptr) return;
+		if (Root->Data == Data)
+		{
+			buffer = Root;
+			Root = Root->pRight;
+			Root->pLeft = buffer->pLeft;
+			delete buffer;
+			return;
+		}
+		if (Root->pLeft->Data == Data)
+		{
+				buffer = Root->pLeft;
+				Root->pLeft = Root->pLeft->pLeft;
+			delete buffer;
+			return;
+		}
+		if (Root->pRight->Data == Data)
+		{
+			buffer = Root->pRight;
+			Root->pRight = Root->pRight->pRight;
+			delete buffer;
+			return;
+		}
+		if (Data < Root->pLeft->Data)
+		{
+			erase(Data, Root->pLeft);
+		}
+		if (Data > Root->pRight->Data)
+		{
+			erase(Data, Root->pRight);
+		}
+	}
 };
 
 void main()
@@ -152,6 +214,11 @@ void main()
 	cout << "Минимальное значение в дереве:\t " << tree.getMinValue() << endl;
 	cout << "Максимальное значение в дереве:\t " << tree.getMaxValue() << endl;
 	cout << "Количество элементов:\t " << tree.count() << "\t" << endl;
+	cout << "Сумма элементов:\t " << tree.sum() << "\t" << endl;
+	cout << "Среднее арифметическое: \t" << tree.avg() << "\t" << endl;
+	cout << "Удалить из дерева елемент со значением: "; cin >> n;
+	tree.erase(n);
+	tree.print();
 	tree.clear();
 	tree.print();
 }
