@@ -37,6 +37,11 @@ public:
 		Root = nullptr;
 		cout << "TConstructor:\t" << this << endl;
 	}
+	Tree(initializer_list<int> il) :Tree()
+	{
+		for (int const* it = il.begin(); it != il.end(); it++)
+			insert(*it);
+	}
 	~Tree()
 	{
 		cout << "TDestructor:\t" << this << endl;
@@ -195,7 +200,6 @@ public:
 	{
 		erase(Data, this->Root);
 	}
-
 
 
 	/*void erase(int Data, Element* Root)
