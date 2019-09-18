@@ -20,6 +20,10 @@ class Tree
 		{
 			cout << "EDestructor:\t" << this << endl;
 		}
+		bool is_leaf()
+		{
+			return pLeft == pRight;
+		}
 		friend class Tree;
 	} *Root;
 public:
@@ -85,7 +89,7 @@ public:
 				insert(Data, Root->pLeft);
 			}
 		}
-		else if(Data > Root->Data)
+		else if (Data > Root->Data)
 		{
 			if (Root->pRight == nullptr)
 			{
@@ -96,6 +100,35 @@ public:
 				insert(Data, Root->pRight);
 			}
 		}
+	}
+
+	void erase(int Data, Element*& Root)
+	{
+		if (Root == nullptr) return;
+		if (Root->Data == Data)
+		{
+			if (Root->is_leaf())
+			{
+				delete Root;
+				Root = nullptr;
+				return;
+			}
+			else
+			{
+				if (Root->pLeft)
+				{
+					Root->Data = getMaxValue(Root->pLeft);
+					erase(getMaxValue(Root->pLeft), Root->pLeft);
+				}
+				else
+				{
+					Root->Data = getMinValue(Root->pRight);
+					erase(getMinValue(Root->pRight), Root->pRight);
+				}
+			}
+		}
+		erase(Data, Root->pLeft);
+		erase(Data, Root->pRight);
 	}
 
 	void clear()
@@ -145,8 +178,8 @@ public:
 	int sum(Element* Root)
 	{
 		if (Root == nullptr) return 0;
-		return ((Root->pLeft != nullptr) ? sum(Root->pLeft) : 0) + ((Root->pRight != nullptr) ? sum(Root->pRight) : 0) + Root->Data;
-	} 
+		return sum(Root->pLeft) + sum(Root->pRight) + Root->Data;
+	}
 
 	double avg()
 	{
@@ -155,7 +188,7 @@ public:
 
 	double avg(Element* Root)
 	{
-		return (double)sum() / (double)count();
+		return (double)sum() / count();
 	}
 
 	void erase(int Data)
@@ -163,7 +196,9 @@ public:
 		erase(Data, this->Root);
 	}
 
-	void erase(int Data, Element* Root)
+
+
+	/*void erase(int Data, Element* Root)
 	{
 		Element* buffer;
 		if (Root == nullptr) return;
@@ -197,7 +232,7 @@ public:
 		{
 			erase(Data, Root->pRight);
 		}
-	}
+	}*/
 };
 
 void main()
@@ -221,4 +256,7 @@ void main()
 	tree.print();
 	tree.clear();
 	tree.print();
+
+	Tree tr2 = { 3, 5, 8, 13, 21 };
+	tr2.print();
 }
