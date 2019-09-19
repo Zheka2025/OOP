@@ -1,6 +1,9 @@
 #include <iostream>
 using namespace std;
 
+#define BASE_CHECK
+#define COPY_CONSTRUCTOR_CHECK
+
 class Tree
 {
 	class Element
@@ -42,6 +45,11 @@ public:
 		for (int const* it = il.begin(); it != il.end(); it++)
 			insert(*it);
 	}
+	Tree(const Tree& other)
+	{
+		CopyTree(this->Root, other.Root);
+		cout << "TCopyConstructor:\t" << this << endl;
+	}
 	~Tree()
 	{
 		cout << "TDestructor:\t" << this << endl;
@@ -73,6 +81,14 @@ public:
 	{
 		if (Root->pRight == nullptr) return Root->Data;
 		return getMaxValue(Root->pRight);
+	}
+
+	void CopyTree(Element*& Root, Element* Other)
+	{
+		if (Other == nullptr) return;
+		Root = new Element(Other->Data);
+		CopyTree(Root->pLeft, Other->pLeft);
+		CopyTree(Root->pRight, Other->pRight);
 	}
 
 	void insert(int Data, Element* Root)
@@ -201,6 +217,13 @@ public:
 		erase(Data, this->Root);
 	}
 
+	Tree& operator=(const Tree& other)
+	{
+		clear();
+		CopyTree(this->Root, other.Root);
+		cout << "TCopyAssignment:\t" << this << endl;
+		return *this;
+	}
 
 	/*void erase(int Data, Element* Root)
 	{
@@ -242,6 +265,7 @@ public:
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef BASE_CHECK
 	int n;
 	cout << "¬ведите размер дерева: "; cin >> n;
 	Tree tree;
@@ -258,9 +282,17 @@ void main()
 	cout << "”далить из дерева елемент со значением: "; cin >> n;
 	tree.erase(n);
 	tree.print();
-	tree.clear();
-	tree.print();
+	/*tree.clear();
+	tree.print();*/
+#endif // BASE_CHECK
 
+#ifdef COPY_CONSTRUCTOR_CHECK
 	Tree tr2 = { 3, 5, 8, 13, 21 };
 	tr2.print();
+	Tree tr3 = tr2;
+	tr3.print();
+	tree.print();
+	tree = tr3;
+	tree.print();
+#endif // COPY_CONSTRUCTOR_CHECK
 }
