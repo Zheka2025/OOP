@@ -222,7 +222,7 @@ public:
 		clear();
 		CopyTree(this->Root, other.Root);
 		cout << "TCopyAssignment:\t" << this << endl;
-		return *this;
+		return *this; 
 	}
 
 	/*void erase(int Data, Element* Root)
