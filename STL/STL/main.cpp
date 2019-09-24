@@ -95,6 +95,34 @@ void main()
 		cout << *it << "\t";
 	}
 	cout << endl;
+	cout << "¬ведите индекс удал€емого Їлемента: "; cin >> index;
+	vec.erase(vec.begin() + index);
+	for (vector<int>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
+	{
+		cout << *it << "\t";
+	}
+	cout << endl;
+	int start, finish;
+	cout << "¬ведите индекс начала удалени€: "; cin >> start;
+	cout << "¬ведите индекс конца удалени€: "; cin >> finish;
+	vec.erase(vec.begin() + start, vec.begin() + finish);
+	for (vector<int>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
+	{
+		cout << *it << "\t";
+	}
+	cout << endl;
+	/*vec.assign(6, rand()%100);
+	for (vector<int>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
+	{
+		cout << *it << "\t";
+	}
+	cout << endl;*/
+	vec.assign(vec.begin() + 2, vec.begin() + 5);
+	for (vector<int>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
+	{
+		cout << *it << "\t";
+	}
+	cout << endl;
 #endif // STL_VECTOR
 
 }
