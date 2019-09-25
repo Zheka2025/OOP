@@ -1,12 +1,18 @@
 #include<iostream>
 #include<array>
 #include<vector>
-
+#include<deque>
+#include<forward_list>
 
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 
 //#define STL_ARRAY
-#define STL_VECTOR
+//#define STL_VECTOR
+//#define STL_DEQUE
+#define STL_FORVARD_LIST
 
 void main()
 {
@@ -111,7 +117,7 @@ void main()
 		cout << *it << "\t";
 	}
 	cout << endl;
-	/*vec.assign(6, rand()%100);
+	/*vec.assign(6, 100);
 	for (vector<int>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
 	{
 		cout << *it << "\t";
@@ -124,5 +130,36 @@ void main()
 	}
 	cout << endl;
 #endif // STL_VECTOR
+
+#ifdef STL_DEQUE
+	deque<int> dq = { 3,5,8,13,21 };
+	for (int i = 0; i < dq.size(); i++)
+	{
+		cout << dq[i] << "\t";
+	}
+	cout << endl;
+	/*dq.push_back(34);
+	dq.push_back(55);
+	dq.push_front(0);
+	dq.push_front(1);*/
+
+	dq.insert(dq.begin(), {0,1,1});
+	dq.insert(dq.end(), {34,55,89});
+	//dq.insert()
+
+	/*dq.emplace(dq.begin() + 3,  128, 256, 512);*/
+
+	for (deque<int>::iterator it = dq.begin(); it != dq.end(); it++)
+	{
+		std::cout << *it << "\t";
+	}
+	std::cout << std::endl;
+#endif // STL_DEQUE
+
+#ifdef STL_FORVARD_LIST
+	forward_list<int> fl{3,5,8,13,21};
+	for (int i : fl)cout << i << "\t"; cout << endl;
+	cout << fl.max_size() << endl;
+#endif // STL_FORVARD_LIST
 
 }
