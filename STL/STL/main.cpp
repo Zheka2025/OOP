@@ -3,6 +3,7 @@
 #include<vector>
 #include<deque>
 #include<forward_list>
+#include<list>
 
 using namespace std;
 using std::cin;
@@ -12,7 +13,8 @@ using std::endl;
 //#define STL_ARRAY
 //#define STL_VECTOR
 //#define STL_DEQUE
-#define STL_FORVARD_LIST
+//#define STL_FORVARD_LIST
+#define STL_LIST
 
 void main()
 {
@@ -160,6 +162,81 @@ void main()
 	forward_list<int> fl{3,5,8,13,21};
 	for (int i : fl)cout << i << "\t"; cout << endl;
 	cout << fl.max_size() << endl;
+
+	for (forward_list<int>::iterator it = fl.begin(); it != fl.end(); it++)
+	{
+		cout << *it << "\t";
+	}
+	cout << endl;
+
+	fl.insert_after(fl.before_begin(), { 0,1,1,2 });
+
+	for (forward_list<int>::iterator it = fl.begin(); it != fl.end(); it++)
+	{
+		cout << *it << "\t";
+	}
+	cout << endl;
+
+	int index;
+	int data;
+	cout << "Введите индекс добавляемого элемента: "; cin >> index;
+	cout << "Введите значение добавляемого элемента: "; cin >> data;
+
+	int i = 0;
+	for (forward_list<int>::iterator it = fl.begin(); it != fl.end(); it++)
+	{
+		if (i == index-1)
+		{
+			fl.insert_after(it, data);
+			break;
+		}
+		i++;
+	}
+
+	for (forward_list<int>::iterator it = fl.begin(); it != fl.end(); it++)
+	{
+		cout << *it << "\t";
+	}
+	cout << endl;
 #endif // STL_FORVARD_LIST
 
+#ifdef STL_LIST
+	/*list<int> my_list{3,5,8,13,21};
+	my_list.resize(8, 101);
+	cout << my_list.size() << endl;
+	cout << my_list.max_size() << endl;
+	cout << forward_list<int>().max_size() << endl;
+	for (int i : my_list)cout << i << "\t"; cout << endl;*/
+	/*list<int> list1 = { 3,5,8,13,21 };
+	list<int> list2 = { 34,55,89 };
+	list<int>::iterator position = list2.begin();
+	position++;
+	list1.splice(list1.end(), list2, position);
+	for (int i : list1)cout << i << "\t"; cout << endl;*/
+
+	list<int> my_list(10);
+
+	for (list<int>::iterator it = my_list.begin(); it != my_list.end(); it++)
+	{
+		*it = rand() % 10;
+	}
+
+	for (int i : my_list)
+	{
+		cout << i << "\t";
+	}
+	cout << endl;
+
+	cout << "size:\t" << my_list.size() << endl;
+	//my_list.remove(4);
+	for (list<int>::iterator it = my_list.begin(); it != my_list.end(); it++)
+	{
+		my_list.remove_if([&it](int num)-> bool {return num % 2 == 0; });
+	}
+	for (int i : my_list)
+	{
+		cout << i << "\t";
+	}
+	cout << endl;
+#endif // STL_LIST
 }
